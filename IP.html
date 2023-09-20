@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<h1>IP-Locator</h1>
+
+<div style=" border: 2px solid black; padding: 10px;">
+
+    Domain Name:                        
+    <input type="text" name="eingabe"> 
+    <button onclick="getinfo()">Submit</button>   
+    
+    <div id="status"></div>
+    <div id="countc"> </div>
+    <div id="lat"> </div>
+    <div id="lon"> </div>
+    <div id="timz"> </div>
+    <div id="isp"> </div>
+    <div id="org"> </div>
+    <div id="link" ></div>
+
+</div>
+<script>
+
+function getinfo(){
+
+    let xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            console.log(xmlHttp.responseText);
+            obj =JSON.parse(this.responseText);
+            
+            
+            document.getElementById('status').innerHTML= "status: "+obj.status
+            document.getElementById('countc').innerHTML= "Country Code: "+obj.countryCode
+            document.getElementById('lat').innerHTML= "lat: "+obj.lat
+            document.getElementById('lon').innerHTML= "lon: "+obj.lon
+            document.getElementById('timz').innerHTML= "Timezone: "+obj.timezone
+            document.getElementById('isp').innerHTML= "isp: "+obj.isp
+            document.getElementById('org').innerHTML= "org: "+obj.org
+            //Ich habe es leider nicht hinbekommen es in einen link rein zuschreiben
+            document.getElementById('link').innerHTML= "https://www.google.com/maps/search/?api=1&query="+ obj.lat+","+obj.lon 
+        }
+       
+    }
+    xmlHttp.open('GET','http://ip-api.com/json/'+ document.getElementsByName('eingabe')[0].value+'?fields=status,message,countryCode,isp,org,lat,lon,timezone', true)
+    xmlHttp.send(null);
+    
+}
+    
+
+</script>
+</body>
+</html>
